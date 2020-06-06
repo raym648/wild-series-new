@@ -48,13 +48,6 @@ Class WildController extends AbstractController
 
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Category::class,
-        ]);
-    }
-
     /**
       * Getting a program with a formatted slug for title
       *
