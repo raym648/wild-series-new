@@ -8,6 +8,7 @@ use App\Entity\Program;
 use App\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 Class WildController extends AbstractController
@@ -30,11 +31,29 @@ Class WildController extends AbstractController
             );
         }
 
-        return $this->render('wild/index.html.twig',
-            ['programs' => $programs]
+        $form = $this->createForm(
+            ProgramSearchType::class, null,
+                ['method' => Request::METHOD_GET]
         );
+
+        $category = new Category();
+        $form = $this->createForm(CategoryType::class, $category);
+
+        return $this->render('wild/index.html.twig', 
+            [
+                'programs' => $programs,
+                'form' => $form->createView(),
+            ]
+        );
+
     }
 
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Category::class,
+        ]);
+    }
 
     /**
       * Getting a program with a formatted slug for title
