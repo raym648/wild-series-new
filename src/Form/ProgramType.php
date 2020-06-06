@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Program;
+use App\Entity\Actor;
 use App\Entity\Category;
 use App\Entity\Season;
 use Symfony\Component\Form\AbstractType;
@@ -23,6 +24,7 @@ class ProgramType extends AbstractType
             ->add('year')
             ->add('category', null, ['choice_label' => 'name'])
             ->add('season', null, ['choice_label' => 'number'])
+            ->add('actors', null, ['choice_label' => 'name'])
         ;
     }
 

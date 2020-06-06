@@ -3,16 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\ProgramRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProgramRepository::class)
- * @UniqueEntity(
- *     fields={"title"},
- *     errorPath="title",
- *     message="Ce titre existe déjà."
- * )
  */
 class Program
 {
@@ -72,6 +69,17 @@ class Program
      * @ORM\JoinColumn(nullable=false)
      */
     private $season;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Actor::class, mappedBy="program")
+     */
+    private $actors;
+
+    public function __construct()
+    {
+        $this->actors = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -185,4 +193,34 @@ class Program
 
         return $this;
     }
+
+    /**
+     * @return Collection|Actor[]
+     */
+    public function getActors(): Collection
+    {
+        return $this->actors;
+    }
+
+    public function addActor(Actor $actor): self
+    {
+        if (!$this->actors->contains($actor)) {
+            $this->actors[] = $actor;
+            $actor->addProgram($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActor(Actor $actor): self
+    {
+        if ($this->actors->contains($actor)) {
+            $this->actors->removeElement($actor);
+            $actor->removeProgram($this);
+        }
+
+        return $this;
+    }
+
+
 }
