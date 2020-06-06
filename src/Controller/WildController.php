@@ -5,6 +5,7 @@
 namespace App\Controller;
 
 use App\Entity\Program;
+use App\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,8 +30,7 @@ Class WildController extends AbstractController
             );
         }
 
-        return $this->render(
-            'wild/index.html.twig',
+        return $this->render('wild/index.html.twig',
             ['programs' => $programs]
         );
     }
